@@ -1,0 +1,10 @@
+import kotlin.Int;
+
+CREATE TABLE IF NOT EXISTS last_pages(
+  _ID INTEGER PRIMARY KEY AUTOINCREMENT,
+  page INTEGER AS Int NOT NULL UNIQUE,
+  added_date INTEGER DEFAULT (strftime('%s', 'now')) NOT NULL
+);
+
+getLastPages:
+  SELECT _ID, page, added_date FROM last_pages ORDER BY added_date DESC;

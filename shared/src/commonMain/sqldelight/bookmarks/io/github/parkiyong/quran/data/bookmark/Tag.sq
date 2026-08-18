@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS tags(
+  _ID INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  added_date INTEGER DEFAULT (strftime('%s', 'now')) NOT NULL
+);
+
+tagByName:
+  SELECT _ID, name, added_date FROM tags WHERE name = ?;
+
+getTags:
+  SELECT _ID, name, added_date FROM tags ORDER BY name ASC;
