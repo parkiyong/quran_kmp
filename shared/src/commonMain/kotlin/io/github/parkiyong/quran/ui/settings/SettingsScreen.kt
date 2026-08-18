@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -67,6 +68,21 @@ fun SettingsScreen(
             Switch(
                 checked = uiState.keepScreenOn,
                 onCheckedChange = null
+            )
+        }
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = "Translation Font Size: ${uiState.translationFontSize} sp",
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Slider(
+                value = uiState.translationFontSize.toFloat(),
+                onValueChange = { viewModel.onIntent(SettingsIntent.SetFontSize(it.toInt())) },
+                valueRange = 12f..32f,
+                steps = 19
             )
         }
     }
