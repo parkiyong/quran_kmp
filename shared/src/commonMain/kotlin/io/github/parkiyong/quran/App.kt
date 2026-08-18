@@ -6,6 +6,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -22,12 +23,12 @@ fun App() {
     KoinContext {
         val navController = rememberNavController()
         val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
+        val destination = navBackStackEntry?.destination
 
         val selectedItem = when {
-            currentRoute?.contains("Bookmarks") == true -> NavigationItem.BOOKMARKS
-            currentRoute?.contains("AudioDownloads") == true -> NavigationItem.AUDIO_DOWNLOADS
-            currentRoute?.contains("Settings") == true -> NavigationItem.SETTINGS
+            destination?.hasRoute<Screen.Bookmarks>() == true -> NavigationItem.BOOKMARKS
+            destination?.hasRoute<Screen.AudioDownloads>() == true -> NavigationItem.AUDIO_DOWNLOADS
+            destination?.hasRoute<Screen.Settings>() == true -> NavigationItem.SETTINGS
             else -> NavigationItem.SURAH_INDEX
         }
 

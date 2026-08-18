@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -14,6 +15,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -34,25 +36,37 @@ fun SettingsScreen(
             style = MaterialTheme.typography.headlineMedium
         )
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .toggleable(
+                    value = uiState.nightMode,
+                    role = Role.Switch,
+                    onValueChange = { viewModel.onIntent(SettingsIntent.SetNightMode(it)) }
+                ),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text("Night Mode", style = MaterialTheme.typography.bodyLarge)
             Switch(
                 checked = uiState.nightMode,
-                onCheckedChange = { viewModel.onIntent(SettingsIntent.SetNightMode(it)) }
+                onCheckedChange = null
             )
         }
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .toggleable(
+                    value = uiState.keepScreenOn,
+                    role = Role.Switch,
+                    onValueChange = { viewModel.onIntent(SettingsIntent.SetKeepScreenOn(it)) }
+                ),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text("Keep Screen On", style = MaterialTheme.typography.bodyLarge)
             Switch(
                 checked = uiState.keepScreenOn,
-                onCheckedChange = { viewModel.onIntent(SettingsIntent.SetKeepScreenOn(it)) }
+                onCheckedChange = null
             )
         }
     }

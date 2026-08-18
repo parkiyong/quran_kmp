@@ -18,11 +18,10 @@ sealed interface Screen {
 
 enum class NavigationItem(
     val route: Screen,
-    val title: String,
-    val iconName: String
+    val title: String
 ) {
-    SURAH_INDEX(Screen.SurahIndex, "Surah", "MenuBook"),
-    BOOKMARKS(Screen.Bookmarks, "Bookmarks", "Bookmark"),
-    AUDIO_DOWNLOADS(Screen.AudioDownloads, "Audio", "Headphones"),
-    SETTINGS(Screen.Settings, "Settings", "Settings")
+    SURAH_INDEX(Screen.SurahIndex, "Surah"),
+    BOOKMARKS(Screen.Bookmarks, "Bookmarks"),
+    AUDIO_DOWNLOADS(Screen.AudioDownloads, "Audio"),
+    SETTINGS(Screen.Settings, "Settings")
 }
