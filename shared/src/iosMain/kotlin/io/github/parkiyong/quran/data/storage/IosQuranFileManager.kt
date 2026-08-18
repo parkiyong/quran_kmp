@@ -16,7 +16,7 @@ class IosQuranFileManager(
 
     @OptIn(ExperimentalForeignApi::class)
     override val appDataDirectory: Path by lazy {
-        val paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, true)
+        val paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, true)
         val dir = (paths.firstOrNull() as? String ?: "").toPath()
         fileSystem.createDirectories(dir)
         dir

@@ -13,6 +13,8 @@ class NativeQuranDatabaseDriverFactory : QuranDatabaseDriverFactory {
     }
 
     override fun createDynamicDriver(path: Path): SqlDriver {
+        // SQLDelight NativeSqliteDriver requires non-null schema constructor arg;
+        // dynamic driver opens pre-existing downloaded SQLite DB without schema migration.
         val dummySchema = object : SqlSchema<QueryResult.Value<Unit>> {
             override val version: Long = 1
             override fun create(driver: SqlDriver): QueryResult.Value<Unit> = QueryResult.Unit

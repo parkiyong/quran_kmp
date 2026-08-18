@@ -2,6 +2,7 @@ package io.github.parkiyong.quran.data.driver
 
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import io.github.parkiyong.quran.data.translation.TranslationsDatabase
+import okio.FileSystem
 import okio.Path.Companion.toPath
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -35,5 +36,38 @@ class DynamicDriverFactoryTest {
 
         val dynamicDriver = factory.createDynamicDriver(":memory:".toPath())
         assertNotNull(dynamicDriver)
+    }
+
+    @Test
+    fun testDynamicDriverWithActualFile() {
+        val tempDir = FileSystem.SYSTEM_TEMPORARY_DIRECTORY / "dynamic_db_test_${System.currentTimeMillis()}"
+        FileSystem.SYSTEM.createDirectories(tempDir)
+        val dbPath = tempDir / "test.db"
+
+        try {
+            val factory = JdbcQuranDatabaseDriverFactory()
+            val fileDriver = factory.createDynamicDriver(dbPath)
+            TranslationsDatabase.Schema.create(fileDriver)
+
+            val db = TranslationsDatabase(fileDriver)
+            db.translationsQueries.update(
+                id = 2,
+                name = "French Translation",
+                translator = "Muhammad Hamidullah",
+                translatorForeign = null,
+                filename = "fr.hamidullah.db",
+                url = "https://example.com/fr.hamidullah.db",
+                languageCode = "fr",
+                version = 1,
+                minimumRequiredVersion = 1,
+                userDisplayOrder = 2
+            )
+
+            val translations = db.translationsQueries.all().executeAsList()
+            assertEquals(1, translations.size)
+            assertEquals("French Translation", translations[0].name)
+        } finally {
+            FileSystem.SYSTEM.deleteRecursively(tempDir)
+        }
     }
 }
