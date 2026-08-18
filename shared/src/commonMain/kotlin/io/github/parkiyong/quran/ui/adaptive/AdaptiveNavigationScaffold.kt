@@ -31,6 +31,19 @@ fun NavigationItem.getIcon(): ImageVector = when (this) {
 }
 
 @Composable
+private fun NavigationItemContent(item: NavigationItem) {
+    Icon(
+        imageVector = item.getIcon(),
+        contentDescription = item.title
+    )
+}
+
+@Composable
+private fun NavigationItemLabel(item: NavigationItem) {
+    Text(item.title)
+}
+
+@Composable
 fun AdaptiveNavigationScaffold(
     selectedItem: NavigationItem,
     onItemSelected: (NavigationItem) -> Unit,
@@ -48,13 +61,8 @@ fun AdaptiveNavigationScaffold(
                         NavigationRailItem(
                             selected = selectedItem == item,
                             onClick = { onItemSelected(item) },
-                            icon = {
-                                Icon(
-                                    imageVector = item.getIcon(),
-                                    contentDescription = item.title
-                                )
-                            },
-                            label = { Text(item.title) }
+                            icon = { NavigationItemContent(item) },
+                            label = { NavigationItemLabel(item) }
                         )
                     }
                 }
@@ -75,13 +83,8 @@ fun AdaptiveNavigationScaffold(
                             NavigationBarItem(
                                 selected = selectedItem == item,
                                 onClick = { onItemSelected(item) },
-                                icon = {
-                                    Icon(
-                                        imageVector = item.getIcon(),
-                                        contentDescription = item.title
-                                    )
-                                },
-                                label = { Text(item.title) }
+                                icon = { NavigationItemContent(item) },
+                                label = { NavigationItemLabel(item) }
                             )
                         }
                     }
